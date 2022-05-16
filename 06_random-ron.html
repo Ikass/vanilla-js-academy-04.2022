@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Random Ron</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+		<style type="text/css">
+			body {
+				margin: 0 auto;
+				max-width: 40em;
+				width: 88%;
+			}
+			img {
+				height: auto;
+				max-width: 100%;
+				width: 100%;
+			}
+		</style>
+	</head>
+	<body>
+
+		<h1>Random Ron</h1>
+
+		<img alt="Ron Swanson standing in front of a buffet stating, 'I've said too much.'" src="https://giphygifs.s3.amazonaws.com/media/iofbYa67AbBg4/giphy.gif">
+
+		<blockquote id="quote" aria-live="polite">
+			<em>Getting a new quote ...</em>
+		</blockquote>
+
+		<p>
+			<button id="get-quote">More Ron</button>
+		</p>
+
+
+		<script>
+			// Your code goes here...
+			let quote = document.querySelector('#quote');
+
+			// select button
+			let btn = document.querySelector('#get-quote');
+
+			// add EventListerer to listen for click even on the button
+			btn.addEventListener('click', function (event) {
+
+				// fetch the Ron Swanson API quote
+				fetch('https://ron-swanson-quotes.herokuapp.com/v2/quotes').then(function (respone){
+					// if the response is successful, get the JSON
+					if (respone.ok) {
+						return respone.json();
+					}
+					// otherwise throw an error
+					return respone.status;
+				}).then(function (data) {
+					// display the first Ron Swanson quote
+					quote.textContent = data[0];
+				}).catch(function (error){
+					// if there was an error
+					console.warn(error);
+					quote.textContent = "Sorry, something went wrong."
+				});
+			});
+
+			// another way would be to make a separate function "function getQuote () ...."
+			// have it load on page load
+			// and then add it as a callback into the btn.addEventListener method
+
+		</script>
+	</body>
+</html>

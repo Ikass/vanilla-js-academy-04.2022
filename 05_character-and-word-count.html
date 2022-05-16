@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<title>Character & Word Count</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<style type="text/css">
+		body {
+			margin: 0 auto;
+			max-width: 40em;
+			width: 88%;
+		}
+
+		label {
+			display: block;
+			width: 100%;
+		}
+
+		textarea {
+			min-height: 24em;
+			width: 100%;
+		}
+	</style>
+</head>
+
+<body>
+
+	<h1>Character & Word Count</h1>
+
+	<label for="text">Enter your text below.</label>
+	<textarea id="text"></textarea>
+
+	<p aria-live="polite" id="count">You've written <strong><span id="word-count">0</span> words</strong> and <strong><span
+				id="character-count">0</span> characters</strong>.</p>
+
+	<script>
+		// Get the elements
+		let text = document.querySelector('#text');
+		let charCount = document.querySelector('#character-count');
+		let wordCount = document.querySelector('#word-count');
+		let count = document.querySelector('#count');
+
+		// Listen for changes to the text area content
+		text.addEventListener('input', function () {
+
+			// Get the word count
+			// RegEx to split after a space and line break
+			let words = text.value.split(/[\s]+/g).filter(function (word) {
+				// create new Aray with words with a lenght property of greater than zero, i.e., not include blank spaces
+				return word.length;
+			});
+			
+			// Display the characters count
+			charCount.textContent = text.value.length;
+
+			// Display the word count
+			wordCount.textContent = words.length;
+			// Display the word and character count, screen-reader friendly version
+			count.textContent=`You've written ${words.length} words and ${text.value.length} characters.`;
+
+		});
+	</script>
+</body>
+
+</html>
