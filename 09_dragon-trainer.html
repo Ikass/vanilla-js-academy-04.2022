@@ -20,7 +20,62 @@
 		<div id="app"></div>
 
 		<script>
+			// get an array of articles from the Dragon Trainer Monthly API, turn them into markup, and inject them into the #app element.
 			// Your code goes here...
+			let app = document.querySelector('#app');
+			// let html = app.innerHTML;
+			let html = '';
+
+			// get the articles
+			async function getDragons () {
+				try {
+					let response = await fetch('https://vanillajsacademy.com/api/dragons.json');
+
+					// if call failed, throw error
+					if (!response.ok) throw response.status;
+
+					// get JSON data
+					let data = await response.json();
+					if (!data) throw 'No data!';
+
+					console.log(data);
+
+					// modify DOM
+					// this approach works, but as it turns out, each iteration replaces the previous article in the variable/string
+					// nah, that is only true if direcly adding to the app.inerHTML
+					// my way creates a blank string and adds to it
+					// for (let article of data.articles){
+					// 	html += `<h1>` + data.publication + `</h1>` + 
+					// 		`<h2><a href="${article.url}">` + article.title + `</a></h2>` + 
+					// 		`<p><em>` + article.author + `</em></p>` + 
+					// 		`<p><em>` + article.pubdate + `</em></p>` +
+					// 		`<p>` + article.article + `</p>`;
+					// }
+
+					// nicer way to format it with template literals and variables
+					for (let article of data.articles){
+						html += 
+						`<article>
+							<h1>${data.publication}</h1>
+							<h2><a href="${article.url}">${article.title}</a></h2>
+							<p><em>By ${article.author} on ${article.pubdate}</em></p>
+							<p>${article.article}</p>
+						</article>`;
+					}
+
+
+					// no need to wrap in <div> tags, it is already in the HTML
+					// app.innerHTML = `<div>` + html + `</div>`;
+					app.innerHTML = html;
+
+				} catch (error) {
+					console.warn(error);
+				}
+			}
+
+			// get an article on page load
+			getDragons();
+
 		</script>
 	</body>
 </html>
